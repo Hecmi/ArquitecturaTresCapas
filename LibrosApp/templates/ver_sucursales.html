@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Sucursales</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/global.css' %}">
+
+</head>
+<body>
+    <ul>
+        <li><a href="{% url 'ver_cliente' %}">Cliente</a></li>
+        <li><a href="{% url 'ver_sucursales' %}">Sucursales</a></li>
+        <li><a href="{% url 'ver_producto_sucursales' %}">Producto</a></li>
+      </ul>
+    <h1>Sucursales</h1>
+    <form method="POST" action="{% url 'buscar_sucursal' %}" style="float: right; margin-right: 10px; margin-top: -80px;">
+        {% csrf_token %}
+        <div>
+            <input type="text" id="search" name="texto_buscar" style="width: 150px;">
+            <button type="submit">Buscar</button>
+            <button type="button" onclick="agregarSucursale()">Agregar</button>
+        </div>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Pais</th>
+                <th>Ciudad</th>
+                <th>Dirección</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sucursale in sucursales %}
+                <tr>
+                    <td>{{ sucursale.pais }}</td>
+                    <td>{{ sucursale.ciudad }}</td>
+                    <td>{{ sucursale.direccion }}</td>
+                    <td>{{ sucursale.descripcion }}</td>
+                    <td>
+                        <!-- Botones Modificar y Eliminar -->
+                        <a href="{% url 'editar_sucursal' id_sucursal=sucursale.id_sucursal %}">Modificar</a>
+                        <a href="{% url 'eliminar_sucursal' id_sucursal=sucursale.id_sucursal %}"class="eliminar">Eliminar</a>
+                        <!-- <button type="button" onclick="eliminarSucursale('{{ sucursale.id }}')">Eliminar</button> -->
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table> 
+    <script>
+        function agregarSucursale() {
+       window.location.href = '{% url "agregarsucursales" %}';
+   }
+       function eliminarSucursale(sucursaleId) {
+           alert("Eliminar sucursale con ID " + sucursaleId);
+       }
+   </script>  
+</body>
+</html>
+
